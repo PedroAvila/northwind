@@ -9,6 +9,14 @@ namespace NorthWind.Controllers
 {
     public class ProductController : Controller
     {
+        [ChildActionOnly]
+        public ActionResult Total()
+        {
+            var context = new NorthwindEntities1();
+            var result = $"<strong>{context.Products.Count()} productos</strong> ";
+            return Content(result);
+        }
+
         public ActionResult HacerAlgoSinRespuesta()
         {
             return new EmptyResult();
