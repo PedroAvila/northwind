@@ -9,6 +9,34 @@ namespace NorthWind.Controllers
 {
     public class ProductController : Controller
     {
+        public ActionResult Create()
+        {
+            var newProduct = new Product();
+            var context = new NorthwindEntities1();
+            var categories = context.Categories.Select(c => new { c.CategoryID, c.CategoryName });
+            ViewBag.CategoryID = new SelectList(categories, "CategoryID", "CategoryName");
+            return View(newProduct);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Product newProduct)
+        {
+            ActionResult result;
+            if (ModelState.IsValid)
+            {
+                var context = new NorthwindEntities1();
+                context.Products.Add(newProduct);
+                context.SaveChanges();
+                result = RedirectToAction("Details", new { id = newProduct.ProductID });
+            }
+            else
+            {
+                result = View(newProduct);
+            }
+
+            return result;
+        }
+
         // GET: Product
         public ActionResult Index()
         {
