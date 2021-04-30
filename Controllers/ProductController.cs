@@ -9,6 +9,16 @@ namespace NorthWind.Controllers
 {
     public class ProductController : Controller
     {
+        public ActionResult HacerAlgoSinRespuesta()
+        {
+            return new EmptyResult();
+        }
+        
+        public ActionResult NoAutorizado()
+        {
+            return new HttpUnauthorizedResult("Acceso denegado");
+        }
+
         public ActionResult Create()
         {
             var newProduct = new Product();

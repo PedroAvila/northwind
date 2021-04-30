@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -13,6 +14,13 @@ namespace NorthWind.Controllers
     public class CategoryController : Controller
     {
         private NorthwindEntities1 db = new NorthwindEntities1();
+
+        public FileStreamResult GetImage(int id = 1)
+        {
+            int offset = 78;
+            var bytes = db.Categories.Where(c => c.CategoryID == id).Select(c => c.Picture).FirstOrDefault();
+            return File(new MemoryStream(bytes, offset, bytes.Length - offset), "image/jepg");
+        }
 
         // GET: Category
         public ActionResult Index()
