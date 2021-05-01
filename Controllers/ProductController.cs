@@ -9,6 +9,24 @@ namespace NorthWind.Controllers
 {
     public class ProductController : Controller
     {
+        public ActionResult GetProductByName(string name)
+        {
+            ActionResult result;
+
+            var context = new NorthwindEntities1();
+            var product = context.Products.FirstOrDefault(p => p.ProductName.Contains(name));
+            if (product != null)
+            {
+                result = View("Details", product);
+            }
+            else
+            {
+                result = HttpNotFound($"Producto {name} no encontrado");
+            }
+
+            return result;
+        }
+
         [ChildActionOnly]
         public ActionResult Total()
         {
@@ -29,6 +47,12 @@ namespace NorthWind.Controllers
 
         public ActionResult Create()
         {
+            //ViewBag.Message = "Proporcione los datos del producto";
+            //ViewBag.ServerTime = DateTime.Now;
+
+            ViewData["Message"] = "Proporcione los datos del producto";
+            ViewData["ServerTime"] = DateTime.Now;
+
             var newProduct = new Product();
             var context = new NorthwindEntities1();
             var categories = context.Categories.Select(c => new { c.CategoryID, c.CategoryName });
